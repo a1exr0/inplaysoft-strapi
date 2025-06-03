@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_home_mini_cards",
+  "info": {
+    "displayName": "Mini Card"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

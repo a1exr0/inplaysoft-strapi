@@ -1,0 +1,65 @@
+{
+  "collectionName": "components_home_sections",
+  "info": {
+    "displayName": "Section",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "home.product"
+    },
+    "mini_cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "home.mini-card"
+    },
+    "slider": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "summary": {
+      "type": "text"
+    },
+    "call_to_action": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.button"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "hero",
+        "product",
+        "solution",
+        "stat",
+        "value",
+        "partner",
+        "news"
+      ]
+    },
+    "cover": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}
