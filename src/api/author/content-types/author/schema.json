@@ -25,15 +25,17 @@
         "videos"
       ]
     },
-    "email": {
-      "type": "string",
-      "private": true
-    },
     "articles": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::article.article",
       "mappedBy": "author"
+    },
+    "position": {
+      "type": "string"
+    },
+    "team": {
+      "type": "string"
     }
   }
 }
