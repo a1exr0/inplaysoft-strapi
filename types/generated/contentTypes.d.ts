@@ -657,7 +657,9 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
           localized: true;
         };
       }>;
-    menu: Schema.Attribute.DynamicZone<['header.menu-button']> &
+    menu: Schema.Attribute.DynamicZone<
+      ['header.menu-button', 'shared.menugroup']
+    > &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

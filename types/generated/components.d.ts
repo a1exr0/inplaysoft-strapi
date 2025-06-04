@@ -3,9 +3,12 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface HeaderMenuButton extends Struct.ComponentSchema {
   collectionName: 'components_header_menu_buttons';
   info: {
+    description: '';
     displayName: 'MenuButton';
   };
   attributes: {
+    icon: Schema.Attribute.Media<'files' | 'images'>;
+    subtitle: Schema.Attribute.String;
     title: Schema.Attribute.String;
     url: Schema.Attribute.String;
   };
