@@ -67,6 +67,9 @@
       "type": "component",
       "repeatable": true,
       "component": "home.testimonial"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }

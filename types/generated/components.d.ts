@@ -49,6 +49,7 @@ export interface HomeSection extends Struct.ComponentSchema {
     cover: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     description: Schema.Attribute.Text;
     mini_cards: Schema.Attribute.Component<'home.mini-card', true>;
+    order: Schema.Attribute.Integer;
     slider: Schema.Attribute.Media<'images' | 'files', true>;
     summary: Schema.Attribute.Text;
     testimonials: Schema.Attribute.Component<'home.testimonial', true>;
