@@ -53,7 +53,16 @@ export interface HomeSection extends Struct.ComponentSchema {
     summary: Schema.Attribute.Text;
     title: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<
-      ['hero', 'product', 'solution', 'stat', 'value', 'partner', 'news']
+      [
+        'hero',
+        'product',
+        'solution',
+        'stat',
+        'value',
+        'partner',
+        'news',
+        'testimonial',
+      ]
     >;
   };
 }
