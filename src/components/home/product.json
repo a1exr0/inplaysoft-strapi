@@ -21,7 +21,7 @@
         "files"
       ]
     },
-    "Tags": {
+    "features": {
       "type": "component",
       "repeatable": true,
       "component": "shared.tag"

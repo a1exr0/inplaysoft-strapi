@@ -30,9 +30,9 @@ export interface HomeProduct extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.tag', true>;
     image: Schema.Attribute.Media<'images' | 'files'>;
     item: Schema.Attribute.Integer;
-    Tags: Schema.Attribute.Component<'shared.tag', true>;
     title: Schema.Attribute.String;
   };
 }
