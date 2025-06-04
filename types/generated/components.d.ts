@@ -87,11 +87,12 @@ export interface HomeTestimonial extends Struct.ComponentSchema {
 export interface SharedButton extends Struct.ComponentSchema {
   collectionName: 'components_shared_buttons';
   info: {
+    description: '';
     displayName: 'Button';
   };
   attributes: {
     title: Schema.Attribute.String;
-    type: Schema.Attribute.Enumeration<['primary', 'secondary']>;
+    type: Schema.Attribute.Enumeration<['primary', 'secondary', 'social']>;
     url: Schema.Attribute.String;
   };
 }
@@ -104,6 +105,17 @@ export interface SharedMedia extends Struct.ComponentSchema {
   };
   attributes: {
     file: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
+  };
+}
+
+export interface SharedMenugroup extends Struct.ComponentSchema {
+  collectionName: 'components_shared_menugroups';
+  info: {
+    displayName: 'menugroup';
+  };
+  attributes: {
+    links: Schema.Attribute.Component<'header.menu-button', true>;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -179,6 +191,7 @@ declare module '@strapi/strapi' {
       'home.testimonial': HomeTestimonial;
       'shared.button': SharedButton;
       'shared.media': SharedMedia;
+      'shared.menugroup': SharedMenugroup;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
