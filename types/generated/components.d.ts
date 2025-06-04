@@ -51,6 +51,7 @@ export interface HomeSection extends Struct.ComponentSchema {
     mini_cards: Schema.Attribute.Component<'home.mini-card', true>;
     slider: Schema.Attribute.Media<'images' | 'files', true>;
     summary: Schema.Attribute.Text;
+    testimonials: Schema.Attribute.Component<'home.testimonial', true>;
     title: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<
       [
@@ -64,6 +65,21 @@ export interface HomeSection extends Struct.ComponentSchema {
         'testimonial',
       ]
     >;
+  };
+}
+
+export interface HomeTestimonial extends Struct.ComponentSchema {
+  collectionName: 'components_home_testimonials';
+  info: {
+    displayName: 'Testimonial';
+  };
+  attributes: {
+    avatar: Schema.Attribute.Media<'images' | 'files', true>;
+    comment: Schema.Attribute.Text;
+    company: Schema.Attribute.Media<'images' | 'files'>;
+    name: Schema.Attribute.String;
+    position: Schema.Attribute.String;
+    stars: Schema.Attribute.Integer;
   };
 }
 
@@ -159,6 +175,7 @@ declare module '@strapi/strapi' {
       'home.mini-card': HomeMiniCard;
       'home.product': HomeProduct;
       'home.section': HomeSection;
+      'home.testimonial': HomeTestimonial;
       'shared.button': SharedButton;
       'shared.media': SharedMedia;
       'shared.quote': SharedQuote;
