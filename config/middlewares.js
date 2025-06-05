@@ -23,6 +23,8 @@ module.exports = ({ env }) => {
             'connect-src': ["'self'", 'https:'],
             'img-src': ["'self'", 'data:', 'blob:', 'https:'],
             'media-src': ["'self'", 'data:', 'blob:', 'https:'],
+            'script-src': ["'self'", "'unsafe-inline'"],
+            'style-src': ["'self'", "'unsafe-inline'"],
             upgradeInsecureRequests: productionConfig.security?.ssl ?? env.bool('SECURE_SSL', false) ? [] : null,
           },
         },
@@ -39,7 +41,7 @@ module.exports = ({ env }) => {
       name: 'strapi::cors',
       config: {
         headers: '*',
-        origin: ['http://localhost:1337', 'http://localhost:3000', 'https://localhost:3000'],
+        origin: env('NODE_ENV') === 'production' ? true : ['http://localhost:1337', 'http://localhost:3000', 'https://localhost:3000'],
         credentials: productionConfig.security?.cors?.credentials ?? env.bool('CORS_CREDENTIALS', true),
         exposedHeaders: productionConfig.security?.cors?.exposedHeaders ?? ['Content-Range', 'X-Content-Range'],
       },
