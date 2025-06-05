@@ -35,16 +35,15 @@ module.exports = ({ env }) => {
     },
 
     // CORS middleware with production settings
-    {
+    ...(productionConfig.security?.cors?.enabled ?? env.bool('CORS_ENABLED', true) ? [{
       name: 'strapi::cors',
       config: {
-        enabled: productionConfig.security?.cors?.enabled ?? env.bool('CORS_ENABLED', true),
         headers: '*',
         origin: ['http://localhost:1337', 'http://localhost:3000', 'https://localhost:3000'],
         credentials: productionConfig.security?.cors?.credentials ?? env.bool('CORS_CREDENTIALS', true),
         exposedHeaders: productionConfig.security?.cors?.exposedHeaders ?? ['Content-Range', 'X-Content-Range'],
       },
-    },
+    }] : []),
 
     'strapi::poweredBy',
     'strapi::query',
