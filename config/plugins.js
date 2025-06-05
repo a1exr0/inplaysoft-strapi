@@ -6,13 +6,17 @@ module.exports = ({ env }) => ({
           config: {
             provider: 'aws-s3',
             providerOptions: {
-              accessKeyId: env('AWS_ACCESS_KEY_ID'),
-              secretAccessKey: env('AWS_ACCESS_SECRET'),
-              region: env('AWS_REGION'),
-              params: {
-                ACL: env('AWS_ACL', 'public-read'),
-                signedUrlExpires: env('AWS_SIGNED_URL_EXPIRES', 15 * 60),
-                Bucket: env('AWS_BUCKET'),
+              s3Options: {
+                credentials: {
+                  accessKeyId: env('AWS_ACCESS_KEY_ID'),
+                  secretAccessKey: env('AWS_ACCESS_SECRET'),
+                },
+                region: env('AWS_REGION'),
+                params: {
+                  ACL: env('AWS_ACL', 'public-read'),
+                  signedUrlExpires: env('AWS_SIGNED_URL_EXPIRES', 15 * 60),
+                  Bucket: env('AWS_BUCKET_NAME'),
+                },
               },
             },
             actionOptions: {
@@ -26,7 +30,7 @@ module.exports = ({ env }) => ({
     'strapi-cache': {
         enabled: true,
         config: {
-        debug: false, // Enable debug logs
+        debug: true, // Enable debug logs
         max: 1000, // Maximum number of items in the cache (only for memory cache)
         ttl: 1000 * 60 * 60, // Time to live for cache items (1 hour)
         size: 1024 * 1024 * 1024, // Maximum size of the cache (1 GB) (only for memory cache)
