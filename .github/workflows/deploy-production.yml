@@ -1,0 +1,101 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_optimize:
+        description: 'Force database optimization'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    env:
+      NODE_ENV: production
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_SSL: ${{ secrets.DATABASE_SSL }}
+      
+    steps:
+    - name: 🔄 Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: 📦 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 📥 Install Dependencies
+      run: npm ci
+      
+    - name: 🏗️ Build Application
+      run: npm run build
+      
+    - name: 🗄️ Database Backup (if needed)
+      run: |
+        if [ "${{ secrets.ENABLE_DB_BACKUP }}" = "true" ]; then
+          echo "Creating database backup..."
+          pg_dump "$DATABASE_URL" > backup_$(date +%Y%m%d_%H%M%S).sql
+        else
+          echo "Database backup disabled"
+        fi
+      continue-on-error: true
+      
+    - name: 🔧 Apply Database Optimizations
+      run: |
+        echo "Applying database optimizations..."
+        npm run optimize:db
+        
+    - name: 🧪 Run Performance Tests
+      run: |
+        echo "Starting Strapi for testing..."
+        npm start &
+        STRAPI_PID=$!
+        
+        # Wait for Strapi to start
+        sleep 30
+        
+        # Run performance tests
+        npm run test:performance || echo "Performance tests failed but continuing..."
+        
+        # Stop Strapi
+        kill $STRAPI_PID
+      continue-on-error: true
+      
+    - name: 🚀 Deploy to Server
+      run: |
+        echo "Deploying to production server..."
+        # Add your deployment commands here
+        # Examples:
+        # - SSH to server and pull latest code
+        # - Build and push Docker image
+        # - Deploy to cloud provider
+        # - Use deployment tools like PM2, Docker Compose, etc.
+        
+    - name: ✅ Health Check
+      run: |
+        echo "Running post-deployment health check..."
+        sleep 10
+        curl -f ${{ secrets.PRODUCTION_URL }}/api/articles || echo "Health check failed"
+      continue-on-error: true
+      
+    - name: 📊 Performance Report
+      if: always()
+      run: |
+        echo "Generating performance report..."
+        # You can add Lighthouse CI, performance monitoring, etc.
+        
+    - name: 📧 Notify Team
+      if: failure()
+      run: |
+        echo "Deployment failed - notifications would be sent here"
+        # Add Slack, email, or other notification integrations 

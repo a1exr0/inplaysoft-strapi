@@ -1,0 +1,52 @@
+# Production Dockerfile with Database Optimization
+FROM node:18-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Production stage
+FROM node:18-alpine AS production
+
+# Install curl for health checks
+RUN apk add --no-cache curl postgresql-client
+
+# Create app directory
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S strapi -u 1001
+
+# Copy built application
+COPY --from=builder --chown=strapi:nodejs /app .
+
+# Create directories for backups and logs
+RUN mkdir -p backups logs && chown -R strapi:nodejs backups logs
+
+# Switch to non-root user
+USER strapi
+
+# Expose port
+EXPOSE 1337
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:1337/api/articles || exit 1
+
+# Start script that includes database optimization
+COPY --chown=strapi:nodejs scripts/docker-start.sh ./
+RUN chmod +x docker-start.sh
+
+CMD ["./docker-start.sh"] 
