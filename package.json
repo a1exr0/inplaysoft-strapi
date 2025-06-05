@@ -8,6 +8,8 @@
     "deploy": "strapi deploy",
     "develop": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
+    "optimize:db": "node ./scripts/optimize-database.js",
+    "test:performance": "node ./scripts/test-performance.js",
     "start": "strapi start",
     "strapi": "strapi"
   },
@@ -16,7 +18,9 @@
     "@strapi/plugin-seo": "^2.0.8",
     "@strapi/plugin-users-permissions": "5.11.0",
     "@strapi/strapi": "5.11.0",
+    "axios": "^1.7.9",
     "better-sqlite3": "11.3.0",
+    "dotenv": "^16.4.7",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "pg": "^8.16.0",
