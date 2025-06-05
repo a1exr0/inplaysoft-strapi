@@ -19,6 +19,9 @@ RUN npm run build
 # Production stage
 FROM node:18-alpine AS production
 
+# Set NODE_ENV explicitly for production
+ENV NODE_ENV=production
+
 # Install curl for health checks
 RUN apk add --no-cache curl postgresql-client
 

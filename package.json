@@ -13,12 +13,14 @@
     "optimize:db:force": "FORCE_OPTIMIZE=true node ./scripts/optimize-database.js",
     "test:performance": "node ./scripts/test-performance.js",
     "start": "strapi start",
+    "start:production": "NODE_ENV=production strapi start",
     "strapi": "strapi"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.11.0",
     "@strapi/plugin-seo": "^2.0.8",
     "@strapi/plugin-users-permissions": "5.11.0",
+    "@strapi/provider-upload-aws-s3": "^5.15.0",
     "@strapi/strapi": "5.11.0",
     "axios": "^1.7.9",
     "better-sqlite3": "11.3.0",

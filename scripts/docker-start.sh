@@ -5,6 +5,16 @@ set -e
 
 echo "🐳 Starting Strapi in Docker..."
 
+# Load production environment variables if .env.production exists
+if [ -f ".env.production" ]; then
+    echo "📋 Loading production environment variables..."
+    export $(grep -v '^#' .env.production | xargs)
+fi
+
+# Ensure NODE_ENV is set to production
+export NODE_ENV=production
+echo "🌍 Environment: $NODE_ENV"
+
 # Wait for database to be ready
 echo "⏳ Waiting for database connection..."
 for i in $(seq 1 30); do
