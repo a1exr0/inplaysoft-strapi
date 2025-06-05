@@ -61,17 +61,7 @@ module.exports = ({ env }) => {
       },
     }] : []),
 
-    // Rate limiting middleware (production only)
-    ...(env('NODE_ENV') === 'production' && (productionConfig.rateLimit?.enabled ?? env.bool('RATE_LIMIT_ENABLED', false)) ? [{
-      name: 'strapi::rate-limit',
-      config: {
-        max: productionConfig.rateLimit?.max ?? env.int('RATE_LIMIT_MAX', 1000),
-        windowMs: productionConfig.rateLimit?.windowMs ?? env.int('RATE_LIMIT_WINDOW', 60000),
-        message: productionConfig.rateLimit?.message ?? 'Too many requests from this IP, please try again later.',
-        standardHeaders: true,
-        legacyHeaders: false,
-      },
-    }] : []),
+
   ];
 
   return middlewares;
