@@ -30,7 +30,7 @@ module.exports = ({ env }) => ({
     'strapi-cache': {
         enabled: env.bool('CACHE_ENABLED', true),
         config: {
-        debug: env.bool('CACHE_DEBUG', false), // Enable debug logs (disable in production)
+        debug: env.bool('CACHE_DEBUG', true), // Enable debug logs (disable in production)
         max: env.int('CACHE_MAX_ITEMS', 1000), // Maximum number of items in the cache (only for memory cache)
         ttl: env.int('CACHE_TTL', 1000 * 60 * 60 * 24 * 7), // Time to live for cache items (1 week - perfect for CMS content)
         size: env.int('CACHE_SIZE', 1024 * 1024 * 1024), // Maximum size of the cache (1 GB) (only for memory cache)
