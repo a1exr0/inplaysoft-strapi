@@ -27,7 +27,19 @@ module.exports = ({ env }) => [
       },
     },
   },
-  'strapi::cors',
+  {
+    name: 'strapi::cors',
+    config: {
+      enabled: true,
+      headers: ['*'],
+      origin: [
+        'http://localhost:1337', // Strapi admin
+        'http://localhost:3000', // Local development
+        'https://inplaysoft-prototype.vercel.app', // Your frontend
+        'https://*.inplaysoft.com', // All Vercel apps (for development branches)
+      ],
+    },
+  },
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
