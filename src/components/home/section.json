@@ -42,12 +42,14 @@
     "type": {
       "type": "enumeration",
       "enum": [
+        "action",
         "hero",
         "product",
         "solution",
         "stat",
         "value",
         "partner",
+        "feature",
         "news",
         "testimonial"
       ]

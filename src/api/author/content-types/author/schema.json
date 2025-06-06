@@ -36,6 +36,12 @@
     },
     "team": {
       "type": "string"
+    },
+    "knowledgebases": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::knowledgebase.knowledgebase",
+      "mappedBy": "author"
     }
   }
 }
