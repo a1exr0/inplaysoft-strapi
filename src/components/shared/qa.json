@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_qas",
+  "info": {
+    "displayName": "QA"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "answer": {
+      "type": "text"
+    }
+  }
+}

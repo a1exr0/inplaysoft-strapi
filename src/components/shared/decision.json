@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_shared_decisions",
+  "info": {
+    "displayName": "Decision"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "buttons": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.button"
+    }
+  }
+}

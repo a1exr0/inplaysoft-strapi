@@ -102,6 +102,83 @@ export interface SharedButton extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedCard extends Struct.ComponentSchema {
+  collectionName: 'components_shared_cards';
+  info: {
+    displayName: 'Card';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    icon_cards: Schema.Attribute.Component<'shared.icon-card', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedDecision extends Struct.ComponentSchema {
+  collectionName: 'components_shared_decisions';
+  info: {
+    displayName: 'Decision';
+  };
+  attributes: {
+    buttons: Schema.Attribute.Component<'shared.button', true>;
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedFaq extends Struct.ComponentSchema {
+  collectionName: 'components_shared_faqs';
+  info: {
+    description: '';
+    displayName: 'Faq';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    questions: Schema.Attribute.Component<'shared.qa', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedHero extends Struct.ComponentSchema {
+  collectionName: 'components_shared_heroes';
+  info: {
+    description: '';
+    displayName: 'Hero';
+  };
+  attributes: {
+    buttons: Schema.Attribute.Component<'shared.button', true>;
+    cover: Schema.Attribute.Media<'images' | 'files'>;
+    description: Schema.Attribute.Text;
+    highlights: Schema.Attribute.Component<'shared.highlight', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedHighlight extends Struct.ComponentSchema {
+  collectionName: 'components_shared_highlights';
+  info: {
+    displayName: 'Highlight';
+  };
+  attributes: {
+    label: Schema.Attribute.String;
+    value: Schema.Attribute.String;
+  };
+}
+
+export interface SharedIconCard extends Struct.ComponentSchema {
+  collectionName: 'components_shared_icon_cards';
+  info: {
+    displayName: 'Icon Card';
+  };
+  attributes: {
+    description: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images' | 'files'>;
+    title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+    url_label: Schema.Attribute.String;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -121,6 +198,17 @@ export interface SharedMenugroup extends Struct.ComponentSchema {
   attributes: {
     links: Schema.Attribute.Component<'header.menu-button', true>;
     title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedQa extends Struct.ComponentSchema {
+  collectionName: 'components_shared_qas';
+  info: {
+    displayName: 'QA';
+  };
+  attributes: {
+    answer: Schema.Attribute.Text;
+    question: Schema.Attribute.String;
   };
 }
 
@@ -195,8 +283,15 @@ declare module '@strapi/strapi' {
       'home.section': HomeSection;
       'home.testimonial': HomeTestimonial;
       'shared.button': SharedButton;
+      'shared.card': SharedCard;
+      'shared.decision': SharedDecision;
+      'shared.faq': SharedFaq;
+      'shared.hero': SharedHero;
+      'shared.highlight': SharedHighlight;
+      'shared.icon-card': SharedIconCard;
       'shared.media': SharedMedia;
       'shared.menugroup': SharedMenugroup;
+      'shared.qa': SharedQa;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
