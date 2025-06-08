@@ -180,7 +180,7 @@ export interface SharedMenuButton extends Struct.ComponentSchema {
   collectionName: 'components_shared_menu_buttons';
   info: {
     description: '';
-    displayName: 'MenuButton';
+    displayName: 'Menu Button';
   };
   attributes: {
     icon: Schema.Attribute.Media<'files' | 'images'>;
@@ -193,10 +193,10 @@ export interface SharedMenuButton extends Struct.ComponentSchema {
 export interface SharedMenugroup extends Struct.ComponentSchema {
   collectionName: 'components_shared_menugroups';
   info: {
-    displayName: 'menugroup';
+    displayName: 'Menu Group';
   };
   attributes: {
-    links: Schema.Attribute.Component<'shared.button', true>;
+    links: Schema.Attribute.Component<'shared.menu-button', true>;
     title: Schema.Attribute.String;
   };
 }

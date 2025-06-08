@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_menu_buttons",
   "info": {
-    "displayName": "MenuButton",
+    "displayName": "Menu Button",
     "description": ""
   },
   "options": {},
@@ -16,12 +16,12 @@
       "type": "string"
     },
     "icon": {
+      "type": "media",
+      "multiple": false,
       "allowedTypes": [
         "files",
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     }
   }
 }
