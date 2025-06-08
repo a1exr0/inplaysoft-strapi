@@ -1,19 +1,5 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface HeaderMenuButton extends Struct.ComponentSchema {
-  collectionName: 'components_shared_menu_buttons';
-  info: {
-    description: '';
-    displayName: 'MenuButton';
-  };
-  attributes: {
-    icon: Schema.Attribute.Media<'files' | 'images'>;
-    subtitle: Schema.Attribute.String;
-    title: Schema.Attribute.String;
-    url: Schema.Attribute.String;
-  };
-}
-
 export interface HomeMiniCard extends Struct.ComponentSchema {
   collectionName: 'components_home_mini_cards';
   info: {
@@ -190,6 +176,20 @@ export interface SharedMedia extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedMenuButton extends Struct.ComponentSchema {
+  collectionName: 'components_shared_menu_buttons';
+  info: {
+    description: '';
+    displayName: 'MenuButton';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'files' | 'images'>;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+  };
+}
+
 export interface SharedMenugroup extends Struct.ComponentSchema {
   collectionName: 'components_shared_menugroups';
   info: {
@@ -277,7 +277,6 @@ export interface SharedTag extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'header.menu-button': HeaderMenuButton;
       'home.mini-card': HomeMiniCard;
       'home.product': HomeProduct;
       'home.section': HomeSection;
@@ -290,6 +289,7 @@ declare module '@strapi/strapi' {
       'shared.highlight': SharedHighlight;
       'shared.icon-card': SharedIconCard;
       'shared.media': SharedMedia;
+      'shared.menu-button': SharedMenuButton;
       'shared.menugroup': SharedMenugroup;
       'shared.qa': SharedQa;
       'shared.quote': SharedQuote;
