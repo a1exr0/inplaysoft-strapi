@@ -1,6 +1,12 @@
-// Load production environment configuration
-const { loadProductionEnv } = require('./load-production-env');
-loadProductionEnv();
+// Environment configuration
+if (process.env.NODE_ENV === 'production') {
+  // Load production environment configuration
+  const { loadProductionEnv } = require('./load-production-env');
+  loadProductionEnv();
+} else {
+  // Development environment
+  require('dotenv').config();
+}
 
 class ForceCleanup {
   constructor() {

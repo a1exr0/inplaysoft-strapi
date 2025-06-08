@@ -1,7 +1,12 @@
-require('dotenv').config();
-// Load production environment configuration
-const { loadProductionEnv } = require('./load-production-env');
-loadProductionEnv();
+// Environment configuration
+if (process.env.NODE_ENV === 'production') {
+  // Load production environment configuration
+  const { loadProductionEnv } = require('./load-production-env');
+  loadProductionEnv();
+} else {
+  // Development environment
+  require('dotenv').config();
+}
 
 const fs = require('fs');
 const path = require('path');
@@ -34,6 +39,10 @@ class WordPressImporterFixed {
     try {
       // DON'T clear processed slugs - keep them to prevent duplicates across runs
       // this.processedSlugs.clear();
+      console.log('🔍 IMPORT DEBUG - Initial state:');
+      console.log(`   🧠 ProcessedSlugs size at start: ${this.processedSlugs.size}`);
+      console.log(`   🧠 ProcessedSlugs contains: [${Array.from(this.processedSlugs).join(', ')}]`);
+      console.log(`   ⚠️ NOT clearing processedSlugs to prevent duplicates across runs`);
       
       // Read and parse XML
       const xmlData = fs.readFileSync(xmlFilePath, 'utf8');
@@ -76,6 +85,14 @@ class WordPressImporterFixed {
         } else {
           skippedCount++;
         }
+        
+        // Show progress and current state every 5 items
+        if ((processedCount + skippedCount) % 5 === 0) {
+          console.log(`\n📊 Progress update after ${processedCount + skippedCount} items:`);
+          console.log(`   ✅ Processed: ${processedCount}`);
+          console.log(`   ⚠️ Skipped: ${skippedCount}`);
+          console.log(`   🧠 ProcessedSlugs size: ${this.processedSlugs.size}`);
+        }
       }
       
       // Generate redirects file
@@ -86,6 +103,7 @@ class WordPressImporterFixed {
       console.log(`   - Processed: ${processedCount}`);
       console.log(`   - Skipped: ${skippedCount}`);
       console.log(`   - Redirects: ${this.redirects.length}`);
+      console.log(`   - Final ProcessedSlugs size: ${this.processedSlugs.size}`);
       
     } catch (error) {
       console.error('❌ Import failed:', error);
@@ -103,6 +121,11 @@ class WordPressImporterFixed {
     const slug = this.getFieldValue(item, 'wp:post_name');
     const originalLink = this.getFieldValue(item, 'link');
     
+    console.log(`\n🔍 DUPLICATE DETECTION DEBUG - Processing item: ${title}`);
+    console.log(`   📝 Slug: "${slug}"`);
+    console.log(`   🧠 Current processedSlugs size: ${this.processedSlugs.size}`);
+    //console.log(`   🧠 ProcessedSlugs contains: [${Array.from(this.processedSlugs).join(', ')}]`);
+    
     // Skip if no title or already processed
     if (!title || !title.trim()) {
       console.log(`⚠️ Skipping item with no title`);
@@ -112,7 +135,10 @@ class WordPressImporterFixed {
     // Check in-memory tracking first (for efficiency)
     if (this.processedSlugs.has(slug)) {
       console.log(`⚠️ Skipping duplicate slug (in-memory): ${slug}`);
+      console.log(`   🧠 Confirmed: slug "${slug}" is in processedSlugs set`);
       return false;
+    } else {
+      console.log(`✅ Slug "${slug}" NOT found in in-memory processedSlugs - continuing with database check`);
     }
     
     // Get categories to determine if it's an article or knowledgebase entry
@@ -120,21 +146,41 @@ class WordPressImporterFixed {
     const primaryCategory = categories.find(cat => cat.domain === 'category');
     const categoryName = primaryCategory ? primaryCategory.nicename : 'insights';
     
+    console.log(`   📂 Category: ${categoryName} (${categoryName === 'news' ? 'Article' : 'Knowledgebase'})`);
+    
     // Check database for existing posts
     try {
       let existingPost = null;
+      console.log(`   🔍 Checking database for existing ${categoryName === 'news' ? 'article' : 'knowledgebase entry'} with slug: "${slug}"`);
+      
       if (categoryName === 'news') {
+        console.log(`   📡 Making API call: GET /api/articles?filters[slug][$eq]=${slug}`);
         const existingArticles = await this.strapiRequest('GET', `/api/articles?filters[slug][$eq]=${slug}`);
+        console.log(`   📊 Database response: ${JSON.stringify(existingArticles, null, 2)}`);
         existingPost = existingArticles.data && existingArticles.data.length > 0 ? existingArticles.data[0] : null;
+        if (existingPost) {
+          console.log(`   ⚠️ Found existing article in database: ID ${existingPost.id}, Title: "${existingPost.attributes?.title || existingPost.title}"`);
+        } else {
+          console.log(`   ✅ No existing article found in database for slug: "${slug}"`);
+        }
       } else {
+        console.log(`   📡 Making API call: GET /api/knowledgebases?filters[slug][$eq]=${slug}`);
         const existingEntries = await this.strapiRequest('GET', `/api/knowledgebases?filters[slug][$eq]=${slug}`);
+        console.log(`   📊 Database response: ${JSON.stringify(existingEntries, null, 2)}`);
         existingPost = existingEntries.data && existingEntries.data.length > 0 ? existingEntries.data[0] : null;
+        if (existingPost) {
+          console.log(`   ⚠️ Found existing knowledgebase entry in database: ID ${existingPost.id}, Title: "${existingPost.attributes?.title || existingPost.title}"`);
+        } else {
+          console.log(`   ✅ No existing knowledgebase entry found in database for slug: "${slug}"`);
+        }
       }
       
       if (existingPost) {
         console.log(`⚠️ Skipping - ${categoryName === 'news' ? 'Article' : 'Knowledgebase entry'} already exists: ${slug} (ID: ${existingPost.id})`);
         // Mark as processed and add to redirects
+        console.log(`   🧠 Adding "${slug}" to processedSlugs set`);
         this.processedSlugs.add(slug);
+        console.log(`   🧠 ProcessedSlugs size after adding: ${this.processedSlugs.size}`);
         const wordpressPath = this.extractWordPressPath(originalLink);
         this.redirects.push({
           from: wordpressPath,
@@ -145,6 +191,7 @@ class WordPressImporterFixed {
       }
     } catch (error) {
       console.error(`   ❌ Error checking for existing post with slug ${slug}:`, error.message);
+      console.error(`   ❌ Full error:`, error);
       // Continue with creation attempt
     }
     
@@ -153,7 +200,9 @@ class WordPressImporterFixed {
     console.log(`   Original date: ${postDate || pubDate}`);
 
     // Mark as processed immediately to prevent duplicates
+    console.log(`   🧠 Adding "${slug}" to processedSlugs set (before creation)`);
     this.processedSlugs.add(slug);
+    //console.log(`   🧠 ProcessedSlugs size after adding: ${this.processedSlugs.size}`);
 
     try {
       // Priority 1: Check for WordPress post attachments (most reliable)
@@ -192,6 +241,8 @@ class WordPressImporterFixed {
       
       // Create content based on category
       let success = false;
+      console.log(`   🚀 Attempting to create ${categoryName === 'news' ? 'article' : 'knowledgebase entry'}`);
+      
       if (categoryName === 'news') {
         success = await this.createArticle({
           title,
@@ -224,6 +275,7 @@ class WordPressImporterFixed {
         });
       }
       
+      console.log(`   📊 Creation result: ${success ? 'SUCCESS' : 'FAILED'}`);
       return success;
       
     } catch (error) {
@@ -234,11 +286,18 @@ class WordPressImporterFixed {
 
   async createArticle(data) {
     try {
+      console.log(`\n🔍 CREATE ARTICLE DEBUG - Starting creation process`);
+      console.log(`   📝 Title: "${data.title}"`);
+      console.log(`   📝 Slug: "${data.slug}"`);
+      
       // Check if article already exists in database
+      console.log(`   📡 Making API call: GET /api/articles?filters[slug][$eq]=${data.slug}`);
       const existingArticles = await this.strapiRequest('GET', `/api/articles?filters[slug][$eq]=${data.slug}`);
+      console.log(`   📊 Database response for createArticle: ${JSON.stringify(existingArticles, null, 2)}`);
       
       if (existingArticles.data && existingArticles.data.length > 0) {
         console.log(`   ⚠️ Article already exists with slug: ${data.slug} (ID: ${existingArticles.data[0].id})`);
+        console.log(`   ⚠️ Existing article title: "${existingArticles.data[0].attributes?.title || existingArticles.data[0].title}"`);
         // Still add to redirects if needed
         const wordpressPath = this.extractWordPressPath(data.originalLink);
         this.redirects.push({
@@ -246,7 +305,10 @@ class WordPressImporterFixed {
           to: `/blog/${data.slug}`,
           type: 'permanent'
         });
+        console.log(`   ✅ Returning true (article exists) - no new creation needed`);
         return true; // Consider it successful since it exists
+      } else {
+        console.log(`   ✅ No existing article found - proceeding with creation`);
       }
 
       // Create or get category
@@ -276,13 +338,22 @@ class WordPressImporterFixed {
       };
 
       console.log(`   📝 Creating article with cover: ${data.coverImage ? 'YES' : 'NO'}`);
+      console.log(`   📝 Final slug to be used: "${articleData.slug}"`);
+      console.log(`   📊 Article data: ${JSON.stringify(articleData, null, 2)}`);
 
       // Create article via Strapi API
+      console.log(`   📡 Making POST request to /api/articles`);
       const response = await this.strapiRequest('POST', '/api/articles', {
         data: articleData
       });
 
+      console.log(`   📊 Creation response: ${JSON.stringify(response, null, 2)}`);
+
       if (response && response.data) {
+        // WORKAROUND: Check for and remove Strapi API duplicates
+        console.log(`   🔍 Checking for Strapi API duplicates after creation...`);
+        await this.removeStrapiApiDuplicates('articles', data.slug, response.data.id);
+        
         // Extract WordPress URL path for redirect
         const wordpressPath = this.extractWordPressPath(data.originalLink);
         this.redirects.push({
@@ -292,21 +363,32 @@ class WordPressImporterFixed {
         });
         console.log(`   ✅ Created article: ${data.title} (ID: ${response.data.id})`);
         return true;
+      } else {
+        console.log(`   ❌ No response data received from article creation`);
+        return false;
       }
 
     } catch (error) {
       console.error(`   ❌ Failed to create article: ${data.title}`, error.message);
+      console.error(`   ❌ Full article creation error:`, error);
       return false;
     }
   }
 
   async createKnowledgebaseEntry(data) {
     try {
+      console.log(`\n🔍 CREATE KNOWLEDGEBASE DEBUG - Starting creation process`);
+      console.log(`   📝 Title: "${data.title}"`);
+      console.log(`   📝 Slug: "${data.slug}"`);
+      
       // Check if knowledgebase entry already exists in database
+      console.log(`   📡 Making API call: GET /api/knowledgebases?filters[slug][$eq]=${data.slug}`);
       const existingEntries = await this.strapiRequest('GET', `/api/knowledgebases?filters[slug][$eq]=${data.slug}`);
+      console.log(`   📊 Database response for createKnowledgebaseEntry: ${JSON.stringify(existingEntries, null, 2)}`);
       
       if (existingEntries.data && existingEntries.data.length > 0) {
         console.log(`   ⚠️ Knowledgebase entry already exists with slug: ${data.slug} (ID: ${existingEntries.data[0].id})`);
+        console.log(`   ⚠️ Existing knowledgebase title: "${existingEntries.data[0].attributes?.title || existingEntries.data[0].title}"`);
         // Still add to redirects if needed
         const wordpressPath = this.extractWordPressPath(data.originalLink);
         this.redirects.push({
@@ -314,7 +396,10 @@ class WordPressImporterFixed {
           to: `/knowledgebase/${data.slug}`,
           type: 'permanent'
         });
+        console.log(`   ✅ Returning true (knowledgebase exists) - no new creation needed`);
         return true; // Consider it successful since it exists
+      } else {
+        console.log(`   ✅ No existing knowledgebase entry found - proceeding with creation`);
       }
 
       // Create or get knowledgebase category
@@ -344,13 +429,22 @@ class WordPressImporterFixed {
       };
 
       console.log(`   📚 Creating knowledgebase with cover: ${data.coverImage ? 'YES' : 'NO'}`);
+      console.log(`   📝 Final slug to be used: "${kbData.slug}"`);
+      //console.log(`   📊 Knowledgebase data: ${JSON.stringify(kbData, null, 2)}`);
 
       // Create knowledgebase entry via Strapi API
+      console.log(`   📡 Making POST request to /api/knowledgebases`);
       const response = await this.strapiRequest('POST', '/api/knowledgebases', {
         data: kbData
       });
 
+      console.log(`   📊 Creation response: ${JSON.stringify(response, null, 2)}`);
+
       if (response && response.data) {
+        // WORKAROUND: Check for and remove Strapi API duplicates
+        console.log(`   🔍 Checking for Strapi API duplicates after creation...`);
+        await this.removeStrapiApiDuplicates('knowledgebases', data.slug, response.data.id);
+        
         // Extract WordPress URL path for redirect
         const wordpressPath = this.extractWordPressPath(data.originalLink);
         this.redirects.push({
@@ -360,10 +454,14 @@ class WordPressImporterFixed {
         });
         console.log(`   ✅ Created knowledgebase: ${data.title} (ID: ${response.data.id})`);
         return true;
+      } else {
+        console.log(`   ❌ No response data received from knowledgebase creation`);
+        return false;
       }
 
     } catch (error) {
       console.error(`   ❌ Failed to create knowledgebase entry: ${data.title}`, error.message);
+      console.error(`   ❌ Full knowledgebase creation error:`, error);
       return false;
     }
   }
@@ -860,6 +958,61 @@ class WordPressImporterFixed {
 
     fs.writeFileSync('_redirects', redirectsContent);
     console.log(`✅ Generated ${this.redirects.length} redirects in _redirects file`);
+  }
+
+  async removeStrapiApiDuplicates(resourceType, slug, keepId) {
+    try {
+      console.log(`   🔍 Checking for API-created duplicates in ${resourceType} with slug: "${slug}"`);
+      
+      // Get all records with this slug
+      const endpoint = `/api/${resourceType}?filters[slug][$eq]=${slug}`;
+      const existingRecords = await this.strapiRequest('GET', endpoint);
+      
+      if (!existingRecords.data || existingRecords.data.length <= 1) {
+        console.log(`   ✅ No duplicates found for slug: "${slug}"`);
+        return;
+      }
+      
+      console.log(`   ⚠️ Found ${existingRecords.data.length} records with slug "${slug}" - removing duplicates...`);
+      
+      // Keep the record with the specified ID, remove all others
+      const duplicates = existingRecords.data.filter(record => record.id !== keepId);
+      
+      console.log(`   🗑️ Will remove ${duplicates.length} duplicate(s), keeping ID: ${keepId}`);
+      
+      for (const duplicate of duplicates) {
+        try {
+          console.log(`   🗑️ Removing duplicate: ID ${duplicate.id}, DocumentID: ${duplicate.documentId}`);
+          
+          // Try using documentId first (Strapi v5 standard)
+          try {
+            await this.strapiRequest('DELETE', `/api/${resourceType}/${duplicate.documentId}`);
+            console.log(`   ✅ Removed duplicate via documentId: ${duplicate.documentId}`);
+          } catch (docIdError) {
+            console.log(`   ⚠️ DocumentId deletion failed, trying numeric ID...`);
+            // Fallback to numeric ID
+            await this.strapiRequest('DELETE', `/api/${resourceType}/${duplicate.id}`);
+            console.log(`   ✅ Removed duplicate via numeric ID: ${duplicate.id}`);
+          }
+          
+        } catch (error) {
+          console.error(`   ❌ Failed to remove duplicate ${duplicate.id}:`, error.message);
+        }
+      }
+      
+      // Verify cleanup
+      const verifyRecords = await this.strapiRequest('GET', endpoint);
+      const remainingCount = verifyRecords.data ? verifyRecords.data.length : 0;
+      
+      if (remainingCount === 1) {
+        console.log(`   ✅ Duplicate cleanup successful - 1 record remains for slug: "${slug}"`);
+      } else {
+        console.log(`   ⚠️ Cleanup verification: ${remainingCount} records still exist for slug: "${slug}"`);
+      }
+      
+    } catch (error) {
+      console.error(`   ❌ Error during duplicate removal for ${resourceType} slug "${slug}":`, error.message);
+    }
   }
 }
 
