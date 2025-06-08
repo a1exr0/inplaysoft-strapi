@@ -33,7 +33,7 @@
     "menu": {
       "type": "dynamiczone",
       "components": [
-        "header.menu-button",
+        "shared.menu-button",
         "shared.menugroup"
       ],
       "required": true,

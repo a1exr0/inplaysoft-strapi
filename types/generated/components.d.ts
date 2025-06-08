@@ -1,7 +1,7 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
 export interface HeaderMenuButton extends Struct.ComponentSchema {
-  collectionName: 'components_header_menu_buttons';
+  collectionName: 'components_shared_menu_buttons';
   info: {
     description: '';
     displayName: 'MenuButton';
@@ -196,7 +196,7 @@ export interface SharedMenugroup extends Struct.ComponentSchema {
     displayName: 'menugroup';
   };
   attributes: {
-    links: Schema.Attribute.Component<'header.menu-button', true>;
+    links: Schema.Attribute.Component<'shared.menu-button', true>;
     title: Schema.Attribute.String;
   };
 }
@@ -277,11 +277,11 @@ export interface SharedTag extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'header.menu-button': HeaderMenuButton;
       'home.mini-card': HomeMiniCard;
       'home.product': HomeProduct;
       'home.section': HomeSection;
       'home.testimonial': HomeTestimonial;
+      'shared.menu-button': HeaderMenuButton;
       'shared.button': SharedButton;
       'shared.card': SharedCard;
       'shared.decision': SharedDecision;

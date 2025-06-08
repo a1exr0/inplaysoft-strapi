@@ -11,7 +11,7 @@
     "links": {
       "type": "component",
       "repeatable": true,
-      "component": "header.menu-button"
+      "component": "shared.menu-button"
     }
   }
 }
