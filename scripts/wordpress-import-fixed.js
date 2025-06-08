@@ -1,4 +1,8 @@
 require('dotenv').config();
+// Load production environment configuration
+const { loadProductionEnv } = require('./load-production-env');
+loadProductionEnv();
+
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
@@ -28,8 +32,8 @@ class WordPressImporterFixed {
     console.log('🚀 Starting WordPress XML import...');
     
     try {
-      // Clear any existing processed slugs
-      this.processedSlugs.clear();
+      // DON'T clear processed slugs - keep them to prevent duplicates across runs
+      // this.processedSlugs.clear();
       
       // Read and parse XML
       const xmlData = fs.readFileSync(xmlFilePath, 'utf8');
@@ -105,17 +109,44 @@ class WordPressImporterFixed {
       return false;
     }
     
+    // Check in-memory tracking first (for efficiency)
     if (this.processedSlugs.has(slug)) {
-      console.log(`⚠️ Skipping duplicate slug: ${slug}`);
+      console.log(`⚠️ Skipping duplicate slug (in-memory): ${slug}`);
       return false;
     }
     
-    // Get categories
+    // Get categories to determine if it's an article or knowledgebase entry
     const categories = this.extractCategories(item);
     const primaryCategory = categories.find(cat => cat.domain === 'category');
-    
-    // Default to 'insights' (knowledgebase) if no category found
     const categoryName = primaryCategory ? primaryCategory.nicename : 'insights';
+    
+    // Check database for existing posts
+    try {
+      let existingPost = null;
+      if (categoryName === 'news') {
+        const existingArticles = await this.strapiRequest('GET', `/api/articles?filters[slug][$eq]=${slug}`);
+        existingPost = existingArticles.data && existingArticles.data.length > 0 ? existingArticles.data[0] : null;
+      } else {
+        const existingEntries = await this.strapiRequest('GET', `/api/knowledgebases?filters[slug][$eq]=${slug}`);
+        existingPost = existingEntries.data && existingEntries.data.length > 0 ? existingEntries.data[0] : null;
+      }
+      
+      if (existingPost) {
+        console.log(`⚠️ Skipping - ${categoryName === 'news' ? 'Article' : 'Knowledgebase entry'} already exists: ${slug} (ID: ${existingPost.id})`);
+        // Mark as processed and add to redirects
+        this.processedSlugs.add(slug);
+        const wordpressPath = this.extractWordPressPath(originalLink);
+        this.redirects.push({
+          from: wordpressPath,
+          to: `/${categoryName === 'news' ? 'blog' : 'knowledgebase'}/${slug}`,
+          type: 'permanent'
+        });
+        return true; // Consider it successful since it exists
+      }
+    } catch (error) {
+      console.error(`   ❌ Error checking for existing post with slug ${slug}:`, error.message);
+      // Continue with creation attempt
+    }
     
     console.log(`\n🔄 Processing: ${title}`);
     console.log(`   Category: ${categoryName}${!primaryCategory ? ' (default - no category found)' : ''}`);
@@ -203,6 +234,21 @@ class WordPressImporterFixed {
 
   async createArticle(data) {
     try {
+      // Check if article already exists in database
+      const existingArticles = await this.strapiRequest('GET', `/api/articles?filters[slug][$eq]=${data.slug}`);
+      
+      if (existingArticles.data && existingArticles.data.length > 0) {
+        console.log(`   ⚠️ Article already exists with slug: ${data.slug} (ID: ${existingArticles.data[0].id})`);
+        // Still add to redirects if needed
+        const wordpressPath = this.extractWordPressPath(data.originalLink);
+        this.redirects.push({
+          from: wordpressPath,
+          to: `/blog/${data.slug}`,
+          type: 'permanent'
+        });
+        return true; // Consider it successful since it exists
+      }
+
       // Create or get category
       const categoryId = await this.createOrGetCategory('News', 'news');
       
@@ -256,6 +302,21 @@ class WordPressImporterFixed {
 
   async createKnowledgebaseEntry(data) {
     try {
+      // Check if knowledgebase entry already exists in database
+      const existingEntries = await this.strapiRequest('GET', `/api/knowledgebases?filters[slug][$eq]=${data.slug}`);
+      
+      if (existingEntries.data && existingEntries.data.length > 0) {
+        console.log(`   ⚠️ Knowledgebase entry already exists with slug: ${data.slug} (ID: ${existingEntries.data[0].id})`);
+        // Still add to redirects if needed
+        const wordpressPath = this.extractWordPressPath(data.originalLink);
+        this.redirects.push({
+          from: wordpressPath,
+          to: `/knowledgebase/${data.slug}`,
+          type: 'permanent'
+        });
+        return true; // Consider it successful since it exists
+      }
+
       // Create or get knowledgebase category
       const categoryId = await this.createOrGetKnowledgebaseCategory('Insights', 'insights');
       

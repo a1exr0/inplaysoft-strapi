@@ -15,6 +15,7 @@
     "setup:import": "node ./scripts/setup-import-permissions.js",
     "import:wordpress": "node ./scripts/wordpress-import.js",
     "import:wordpress:fixed": "node ./scripts/wordpress-import-fixed.js",
+    "remove:duplicates": "node ./scripts/remove-duplicates.js",
     "cleanup:all": "node ./scripts/complete-cleanup.js",
     "cleanup:force": "node ./scripts/force-cleanup.js",
     "test:images": "node ./scripts/test-image-upload.js",

@@ -1,4 +1,7 @@
 require('dotenv').config();
+// Load production environment configuration
+const { loadProductionEnv } = require('./load-production-env');
+loadProductionEnv();
 
 class ForceCleanup {
   constructor() {
