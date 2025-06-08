@@ -23,6 +23,7 @@
     "test:webp": "node ./scripts/test-webp-fix.js",
     "test:import": "node ./scripts/test-single-import.js",
     "update:timestamps": "node ./scripts/update-timestamps-db.js",
+    "update:timestamps:production": "NODE_ENV=production node ./scripts/update-timestamps-db.js",
     "migrate:complete": "node ./scripts/complete-wordpress-migration.js",
     "start": "strapi start",
     "start:production": "NODE_ENV=production strapi start",

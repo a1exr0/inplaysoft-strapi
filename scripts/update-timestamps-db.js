@@ -1,4 +1,7 @@
-require('dotenv').config();
+// Load production environment configuration
+const { loadProductionEnv } = require('./load-production-env');
+loadProductionEnv();
+
 const { Pool } = require('pg');
 const fs = require('fs');
 const xml2js = require('xml2js');
@@ -11,6 +14,9 @@ class TimestampUpdater {
       database: process.env.DATABASE_NAME,
       password: process.env.DATABASE_PASSWORD,
       port: parseInt(process.env.DATABASE_PORT) || 5432,
+      ssl: process.env.DATABASE_SSL === 'true' ? {
+        rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false'
+      } : false,
     });
     this.processedItems = [];
   }
