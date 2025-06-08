@@ -4,6 +4,13 @@ class CompleteCleanup {
   constructor() {
     this.baseUrl = process.env.PUBLIC_URL || 'http://localhost:1337';
     this.apiToken = process.env.STRAPI_API_TOKEN;
+    
+    // Add logging to show what endpoint and credentials we're using
+    console.log('🔧 CLEANUP CONFIGURATION:');
+    console.log(`   📡 Base URL: ${this.baseUrl}`);
+    console.log(`   🔑 API Token: ${this.apiToken ? `${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}` : 'NOT SET'}`);
+    console.log(`   📊 Token Length: ${this.apiToken ? this.apiToken.length : 0} characters`);
+    console.log('');
   }
 
   async performCompleteCleanup() {
@@ -231,38 +238,7 @@ class CompleteCleanup {
   async strapiRequest(method, endpoint, data = null) {
     const url = `${this.baseUrl}${endpoint}`;
     
-    const options = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    };
-
-    if (this.apiToken) {
-      options.headers.Authorization = `Bearer ${this.apiToken}`;
-    }
-
-    if (data) {
-      options.body = JSON.stringify(data);
-    }
-
-    try {
-      const response = await fetch(url, options);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Strapi API error: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error(`Strapi request failed: ${method} ${endpoint}`, error);
-      throw error;
-    }
-  }
-
-  async strapiRequestNoResponse(method, endpoint, data = null) {
-    const url = `${this.baseUrl}${endpoint}`;
+    console.log(`🌐 Making ${method} request to: ${url}`);
     
     const options = {
       method,
@@ -273,6 +249,9 @@ class CompleteCleanup {
 
     if (this.apiToken) {
       options.headers.Authorization = `Bearer ${this.apiToken}`;
+      console.log(`🔐 Using Authorization header: Bearer ${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}`);
+    } else {
+      console.log('⚠️ No API token found - requests will be unauthorized!');
     }
 
     if (data) {
@@ -282,15 +261,62 @@ class CompleteCleanup {
     try {
       const response = await fetch(url, options);
       
+      console.log(`📊 Response status: ${response.status} ${response.statusText}`);
+      
       if (!response.ok) {
         const errorText = await response.text();
+        console.error(`❌ API Error Response: ${errorText}`);
         throw new Error(`Strapi API error: ${response.status} - ${errorText}`);
       }
 
+      const result = await response.json();
+      console.log(`✅ Request successful`);
+      return result;
+    } catch (error) {
+      console.error(`❌ Strapi request failed: ${method} ${endpoint}`, error);
+      throw error;
+    }
+  }
+
+  async strapiRequestNoResponse(method, endpoint, data = null) {
+    const url = `${this.baseUrl}${endpoint}`;
+    
+    console.log(`🌐 Making ${method} request to: ${url}`);
+    
+    const options = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    if (this.apiToken) {
+      options.headers.Authorization = `Bearer ${this.apiToken}`;
+      console.log(`🔐 Using Authorization header: Bearer ${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}`);
+    } else {
+      console.log('⚠️ No API token found - requests will be unauthorized!');
+    }
+
+    if (data) {
+      options.body = JSON.stringify(data);
+    }
+
+    try {
+      const response = await fetch(url, options);
+      
+      console.log(`📊 Response status: ${response.status} ${response.statusText}`);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ API Error Response: ${errorText}`);
+        throw new Error(`Strapi API error: ${response.status} - ${errorText}`);
+      }
+
+      console.log(`✅ Delete request successful`);
       // For DELETE requests, don't try to parse JSON response
       return true;
     } catch (error) {
-      console.error(`Strapi request failed: ${method} ${endpoint}`, error);
+      console.error(`❌ Strapi request failed: ${method} ${endpoint}`, error);
       throw error;
     }
   }

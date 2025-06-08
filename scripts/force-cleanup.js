@@ -1,4 +1,3 @@
-require('dotenv').config();
 // Load production environment configuration
 const { loadProductionEnv } = require('./load-production-env');
 loadProductionEnv();
@@ -7,6 +6,13 @@ class ForceCleanup {
   constructor() {
     this.baseUrl = process.env.PUBLIC_URL || 'http://localhost:1337';
     this.apiToken = process.env.STRAPI_API_TOKEN;
+    
+    // Add logging to show what endpoint and credentials we're using
+    console.log('🔧 FORCE CLEANUP CONFIGURATION:');
+    console.log(`   📡 Base URL: ${this.baseUrl}`);
+    console.log(`   🔑 API Token: ${this.apiToken ? `${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}` : 'NOT SET'}`);
+    console.log(`   📊 Token Length: ${this.apiToken ? this.apiToken.length : 0} characters`);
+    console.log('');
   }
 
   async performForceCleanup() {
@@ -190,6 +196,8 @@ class ForceCleanup {
   async deleteRequest(endpoint) {
     const url = `${this.baseUrl}${endpoint}`;
     
+    console.log(`🌐 Making DELETE request to: ${url}`);
+    
     const options = {
       method: 'DELETE',
       headers: {
@@ -199,20 +207,29 @@ class ForceCleanup {
 
     if (this.apiToken) {
       options.headers.Authorization = `Bearer ${this.apiToken}`;
+      console.log(`🔐 Using Authorization header: Bearer ${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}`);
+    } else {
+      console.log('⚠️ No API token found - DELETE request will be unauthorized!');
     }
 
     const response = await fetch(url, options);
     
+    console.log(`📊 DELETE Response status: ${response.status} ${response.statusText}`);
+    
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`❌ DELETE API Error Response: ${errorText}`);
       throw new Error(`${response.status}: ${errorText}`);
     }
 
+    console.log(`✅ DELETE request successful`);
     return true;
   }
 
   async strapiRequest(method, endpoint, data = null) {
     const url = `${this.baseUrl}${endpoint}`;
+    
+    console.log(`🌐 Making ${method} request to: ${url}`);
     
     const options = {
       method,
@@ -223,6 +240,9 @@ class ForceCleanup {
 
     if (this.apiToken) {
       options.headers.Authorization = `Bearer ${this.apiToken}`;
+      console.log(`🔐 Using Authorization header: Bearer ${this.apiToken.substring(0, 10)}...${this.apiToken.substring(this.apiToken.length - 4)}`);
+    } else {
+      console.log('⚠️ No API token found - requests will be unauthorized!');
     }
 
     if (data) {
@@ -231,12 +251,17 @@ class ForceCleanup {
 
     const response = await fetch(url, options);
     
+    console.log(`📊 Response status: ${response.status} ${response.statusText}`);
+    
     if (!response.ok) {
       const errorText = await response.text();
+      console.error(`❌ API Error Response: ${errorText}`);
       throw new Error(`Strapi API error: ${response.status} - ${errorText}`);
     }
 
-    return await response.json();
+    const result = await response.json();
+    console.log(`✅ Request successful`);
+    return result;
   }
 
   async sleep(ms) {
