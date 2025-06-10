@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_home_testimonials",
+  "collectionName": "components_shared_testimonials",
   "info": {
-    "displayName": "Testimonial"
+    "displayName": "Block - Testimonial"
   },
   "options": {},
   "attributes": {
@@ -18,20 +18,20 @@
       "type": "integer"
     },
     "avatar": {
+      "type": "media",
+      "multiple": true,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "company": {
+      "type": "media",
+      "multiple": false,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     }
   }
 }

@@ -1,8 +1,7 @@
 {
-  "collectionName": "components_shared_faqs",
+  "collectionName": "components_shared_card_sliders",
   "info": {
-    "displayName": "Card - Faq",
-    "description": ""
+    "displayName": "Card - Slider"
   },
   "options": {},
   "attributes": {
@@ -12,13 +11,17 @@
     "description": {
       "type": "text"
     },
-    "questions": {
+    "sliders": {
       "type": "component",
-      "component": "shared.qa",
+      "component": "shared.slider",
       "repeatable": true
+    },
+    "summary": {
+      "type": "string"
     },
     "visible": {
       "type": "boolean"
     }
-  }
+  },
+  "config": {}
 }

@@ -1,8 +1,7 @@
 {
-  "collectionName": "components_shared_faqs",
+  "collectionName": "components_shared_card_simple_features",
   "info": {
-    "displayName": "Card - Faq",
-    "description": ""
+    "displayName": "Card - Simple Feature"
   },
   "options": {},
   "attributes": {
@@ -12,13 +11,14 @@
     "description": {
       "type": "text"
     },
-    "questions": {
+    "features": {
       "type": "component",
-      "component": "shared.qa",
+      "component": "shared.block-simple-feature",
       "repeatable": true
     },
     "visible": {
       "type": "boolean"
     }
-  }
+  },
+  "config": {}
 }

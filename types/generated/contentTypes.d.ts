@@ -393,10 +393,37 @@ export interface ApiAboutAbout extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::about.about'>;
     publishedAt: Schema.Attribute.DateTime;
-    sections: Schema.Attribute.Component<'home.section', true> &
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'shared.hero',
+        'shared.faq',
+        'shared.decision',
+        'shared.card',
+        'shared.card-testimonial',
+        'shared.card-slim-feature',
+        'shared.card-slider',
+        'shared.card-simple-feature',
+        'shared.card-news',
+        'shared.card-highlight',
+        'shared.card-feature',
+        'shared.card-rich-text',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    seo: Schema.Attribute.Component<'shared.seo', false> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -450,6 +477,18 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    custom_created_at: Schema.Attribute.Date &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    custom_published_at: Schema.Attribute.DateTime &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     description: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -592,6 +631,12 @@ export interface ApiContactContact extends Struct.SingleTypeSchema {
       'api::contact.contact'
     >;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -764,12 +809,12 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
-  collectionName: 'home_pages';
+export interface ApiHomeHome extends Struct.SingleTypeSchema {
+  collectionName: 'homes';
   info: {
-    displayName: 'Home Page';
-    pluralName: 'home-pages';
-    singularName: 'home-page';
+    displayName: 'Home';
+    pluralName: 'homes';
+    singularName: 'home';
   };
   options: {
     draftAndPublish: true;
@@ -783,19 +828,31 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text &
+    desc: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::home-page.home-page'
-    >;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::home.home'>;
     publishedAt: Schema.Attribute.DateTime;
-    sections: Schema.Attribute.DynamicZone<['home.section']> &
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'shared.hero',
+        'shared.faq',
+        'shared.decision',
+        'shared.card',
+        'shared.card-testimonial',
+        'shared.card-slider',
+        'shared.card-highlight',
+        'shared.card-feature',
+        'shared.card-simple-feature',
+        'shared.card-news',
+        'shared.card-rich-text',
+        'shared.card-slim-feature',
+      ]
+    > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -942,6 +999,18 @@ export interface ApiKnowledgebaseKnowledgebase
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    custom_created_at: Schema.Attribute.Date &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    custom_published_at: Schema.Attribute.DateTime &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     description: Schema.Attribute.Text;
     knowledgebase_category: Schema.Attribute.Relation<
       'manyToOne',
@@ -966,7 +1035,7 @@ export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
   collectionName: 'news_pages';
   info: {
     description: '';
-    displayName: 'News Page';
+    displayName: 'News';
     pluralName: 'news-pages';
     singularName: 'news-page';
   };
@@ -1045,11 +1114,34 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
       'api::product.product'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    sections: Schema.Attribute.Component<'home.section', true>;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    slug: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique &
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'shared.hero',
+        'shared.faq',
+        'shared.decision',
+        'shared.card',
+        'shared.card-testimonial',
+        'shared.card-slim-feature',
+        'shared.card-slider',
+        'shared.card-simple-feature',
+        'shared.card-rich-text',
+        'shared.card-news',
+        'shared.card-highlight',
+        'shared.card-feature',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    seo: Schema.Attribute.Component<'shared.seo', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    slug: Schema.Attribute.UID &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1088,8 +1180,33 @@ export interface ApiSolutionSolution extends Struct.CollectionTypeSchema {
       'api::solution.solution'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    sections: Schema.Attribute.Component<'home.section', true>;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
+    sections: Schema.Attribute.DynamicZone<
+      [
+        'shared.hero',
+        'shared.faq',
+        'shared.decision',
+        'shared.card',
+        'shared.card-testimonial',
+        'shared.card-slim-feature',
+        'shared.card-slider',
+        'shared.card-simple-feature',
+        'shared.card-rich-text',
+        'shared.card-news',
+        'shared.card-highlight',
+        'shared.card-feature',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    seo: Schema.Attribute.Component<'shared.seo', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     slug: Schema.Attribute.String;
     title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -1615,7 +1732,7 @@ declare module '@strapi/strapi' {
       'api::footer.footer': ApiFooterFooter;
       'api::global.global': ApiGlobalGlobal;
       'api::header.header': ApiHeaderHeader;
-      'api::home-page.home-page': ApiHomePageHomePage;
+      'api::home.home': ApiHomeHome;
       'api::knowledgebase-category.knowledgebase-category': ApiKnowledgebaseCategoryKnowledgebaseCategory;
       'api::knowledgebase-page.knowledgebase-page': ApiKnowledgebasePageKnowledgebasePage;
       'api::knowledgebase.knowledgebase': ApiKnowledgebaseKnowledgebase;

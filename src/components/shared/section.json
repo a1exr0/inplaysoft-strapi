@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_home_sections",
+  "collectionName": "components_shared_sections",
   "info": {
-    "displayName": "Section",
+    "displayName": "Card - Section",
     "description": ""
   },
   "options": {},
@@ -14,13 +14,13 @@
     },
     "cards": {
       "type": "component",
-      "repeatable": true,
-      "component": "home.product"
+      "component": "shared.product",
+      "repeatable": true
     },
     "mini_cards": {
       "type": "component",
-      "repeatable": true,
-      "component": "home.mini-card"
+      "component": "shared.mini-card",
+      "repeatable": true
     },
     "slider": {
       "type": "media",
@@ -36,8 +36,8 @@
     },
     "call_to_action": {
       "type": "component",
-      "repeatable": true,
-      "component": "shared.button"
+      "component": "shared.button",
+      "repeatable": true
     },
     "type": {
       "type": "enumeration",
@@ -67,11 +67,14 @@
     },
     "testimonials": {
       "type": "component",
-      "repeatable": true,
-      "component": "home.testimonial"
+      "component": "shared.testimonial",
+      "repeatable": true
     },
     "order": {
       "type": "integer"
+    },
+    "visible": {
+      "type": "boolean"
     }
   }
 }

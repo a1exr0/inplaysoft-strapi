@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_card_rich_texts",
+  "info": {
+    "displayName": "Card - RichText"
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "richtext"
+    },
+    "visible": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

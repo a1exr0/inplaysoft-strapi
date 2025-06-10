@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_card_news",
+  "info": {
+    "displayName": "Card - News"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "visible": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}

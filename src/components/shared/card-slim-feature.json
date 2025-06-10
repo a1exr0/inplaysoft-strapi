@@ -1,8 +1,7 @@
 {
-  "collectionName": "components_shared_faqs",
+  "collectionName": "components_shared_card_slim_features",
   "info": {
-    "displayName": "Card - Faq",
-    "description": ""
+    "displayName": "Card - Slim Feature"
   },
   "options": {},
   "attributes": {
@@ -12,13 +11,11 @@
     "description": {
       "type": "text"
     },
-    "questions": {
+    "features": {
       "type": "component",
-      "component": "shared.qa",
+      "component": "shared.block-simple-feature",
       "repeatable": true
-    },
-    "visible": {
-      "type": "boolean"
     }
-  }
+  },
+  "config": {}
 }

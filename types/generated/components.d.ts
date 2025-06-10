@@ -1,77 +1,14 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface HomeMiniCard extends Struct.ComponentSchema {
-  collectionName: 'components_home_mini_cards';
+export interface SharedBlockSimpleFeature extends Struct.ComponentSchema {
+  collectionName: 'components_shared_block_simple_features';
   info: {
-    displayName: 'Mini Card';
-  };
-  attributes: {
-    description: Schema.Attribute.String;
-    title: Schema.Attribute.String;
-  };
-}
-
-export interface HomeProduct extends Struct.ComponentSchema {
-  collectionName: 'components_home_products';
-  info: {
-    description: '';
-    displayName: 'Card';
+    displayName: 'Block - Simple Feature';
   };
   attributes: {
     description: Schema.Attribute.Text;
-    features: Schema.Attribute.Component<'shared.tag', true>;
     image: Schema.Attribute.Media<'images' | 'files'>;
-    item: Schema.Attribute.Integer;
     title: Schema.Attribute.String;
-  };
-}
-
-export interface HomeSection extends Struct.ComponentSchema {
-  collectionName: 'components_home_sections';
-  info: {
-    description: '';
-    displayName: 'Section';
-  };
-  attributes: {
-    call_to_action: Schema.Attribute.Component<'shared.button', true>;
-    cards: Schema.Attribute.Component<'home.product', true>;
-    cover: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    description: Schema.Attribute.Text;
-    mini_cards: Schema.Attribute.Component<'home.mini-card', true>;
-    order: Schema.Attribute.Integer;
-    slider: Schema.Attribute.Media<'images' | 'files', true>;
-    summary: Schema.Attribute.Text;
-    testimonials: Schema.Attribute.Component<'home.testimonial', true>;
-    title: Schema.Attribute.String;
-    type: Schema.Attribute.Enumeration<
-      [
-        'action',
-        'hero',
-        'product',
-        'solution',
-        'stat',
-        'value',
-        'partner',
-        'feature',
-        'news',
-        'testimonial',
-      ]
-    >;
-  };
-}
-
-export interface HomeTestimonial extends Struct.ComponentSchema {
-  collectionName: 'components_home_testimonials';
-  info: {
-    displayName: 'Testimonial';
-  };
-  attributes: {
-    avatar: Schema.Attribute.Media<'images' | 'files', true>;
-    comment: Schema.Attribute.Text;
-    company: Schema.Attribute.Media<'images' | 'files'>;
-    name: Schema.Attribute.String;
-    position: Schema.Attribute.String;
-    stars: Schema.Attribute.Integer;
   };
 }
 
@@ -91,24 +28,127 @@ export interface SharedButton extends Struct.ComponentSchema {
 export interface SharedCard extends Struct.ComponentSchema {
   collectionName: 'components_shared_cards';
   info: {
-    displayName: 'Card';
+    displayName: 'Card - Icon';
   };
   attributes: {
     description: Schema.Attribute.Text;
     icon_cards: Schema.Attribute.Component<'shared.icon-card', true>;
     title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardFeature extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_features';
+  info: {
+    displayName: 'Card - Feature';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.product', true>;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardHighlight extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_highlights';
+  info: {
+    displayName: 'Card - Highlight';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    highlights: Schema.Attribute.Component<'shared.highlight', true>;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardNews extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_news';
+  info: {
+    displayName: 'Card - News';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardRichText extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_rich_texts';
+  info: {
+    displayName: 'Card - RichText';
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardSimpleFeature extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_simple_features';
+  info: {
+    displayName: 'Card - Simple Feature';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.block-simple-feature', true>;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardSlider extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_sliders';
+  info: {
+    displayName: 'Card - Slider';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    sliders: Schema.Attribute.Component<'shared.slider', true>;
+    summary: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
+export interface SharedCardSlimFeature extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_slim_features';
+  info: {
+    displayName: 'Card - Slim Feature';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.block-simple-feature', true>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedCardTestimonial extends Struct.ComponentSchema {
+  collectionName: 'components_shared_card_testimonials';
+  info: {
+    displayName: 'Card - Testimonial';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    testimonials: Schema.Attribute.Component<'shared.testimonial', true>;
+    title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
   };
 }
 
 export interface SharedDecision extends Struct.ComponentSchema {
   collectionName: 'components_shared_decisions';
   info: {
-    displayName: 'Decision';
+    displayName: 'Card - Decision';
   };
   attributes: {
     buttons: Schema.Attribute.Component<'shared.button', true>;
     description: Schema.Attribute.Text;
     title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
   };
 }
 
@@ -116,12 +156,13 @@ export interface SharedFaq extends Struct.ComponentSchema {
   collectionName: 'components_shared_faqs';
   info: {
     description: '';
-    displayName: 'Faq';
+    displayName: 'Card - Faq';
   };
   attributes: {
     description: Schema.Attribute.Text;
     questions: Schema.Attribute.Component<'shared.qa', true>;
     title: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean;
   };
 }
 
@@ -129,7 +170,7 @@ export interface SharedHero extends Struct.ComponentSchema {
   collectionName: 'components_shared_heroes';
   info: {
     description: '';
-    displayName: 'Hero';
+    displayName: 'Card - Hero';
   };
   attributes: {
     buttons: Schema.Attribute.Component<'shared.button', true>;
@@ -137,13 +178,15 @@ export interface SharedHero extends Struct.ComponentSchema {
     description: Schema.Attribute.Text;
     highlights: Schema.Attribute.Component<'shared.highlight', true>;
     title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['primary', 'secondary']>;
+    visible: Schema.Attribute.Boolean;
   };
 }
 
 export interface SharedHighlight extends Struct.ComponentSchema {
   collectionName: 'components_shared_highlights';
   info: {
-    displayName: 'Highlight';
+    displayName: 'Block - Highlight';
   };
   attributes: {
     label: Schema.Attribute.String;
@@ -154,7 +197,7 @@ export interface SharedHighlight extends Struct.ComponentSchema {
 export interface SharedIconCard extends Struct.ComponentSchema {
   collectionName: 'components_shared_icon_cards';
   info: {
-    displayName: 'Icon Card';
+    displayName: 'Block - Icon';
   };
   attributes: {
     description: Schema.Attribute.String;
@@ -201,10 +244,36 @@ export interface SharedMenugroup extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedMiniCard extends Struct.ComponentSchema {
+  collectionName: 'components_shared_mini_cards';
+  info: {
+    displayName: 'Block - Mini Card';
+  };
+  attributes: {
+    description: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface SharedProduct extends Struct.ComponentSchema {
+  collectionName: 'components_home_products';
+  info: {
+    description: '';
+    displayName: 'Block - Feature';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    features: Schema.Attribute.Component<'shared.tag', true>;
+    image: Schema.Attribute.Media<'images' | 'files'>;
+    item: Schema.Attribute.Integer;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface SharedQa extends Struct.ComponentSchema {
   collectionName: 'components_shared_qas';
   info: {
-    displayName: 'QA';
+    displayName: 'Block - QA';
   };
   attributes: {
     answer: Schema.Attribute.Text;
@@ -236,6 +305,41 @@ export interface SharedRichText extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSection extends Struct.ComponentSchema {
+  collectionName: 'components_shared_sections';
+  info: {
+    description: '';
+    displayName: 'Card - Section';
+  };
+  attributes: {
+    call_to_action: Schema.Attribute.Component<'shared.button', true>;
+    cards: Schema.Attribute.Component<'shared.product', true>;
+    cover: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    description: Schema.Attribute.Text;
+    mini_cards: Schema.Attribute.Component<'shared.mini-card', true>;
+    order: Schema.Attribute.Integer;
+    slider: Schema.Attribute.Media<'images' | 'files', true>;
+    summary: Schema.Attribute.Text;
+    testimonials: Schema.Attribute.Component<'shared.testimonial', true>;
+    title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<
+      [
+        'action',
+        'hero',
+        'product',
+        'solution',
+        'stat',
+        'value',
+        'partner',
+        'feature',
+        'news',
+        'testimonial',
+      ]
+    >;
+    visible: Schema.Attribute.Boolean;
+  };
+}
+
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
@@ -255,7 +359,7 @@ export interface SharedSlider extends Struct.ComponentSchema {
   collectionName: 'components_shared_sliders';
   info: {
     description: '';
-    displayName: 'Slider';
+    displayName: 'Block - Slider';
     icon: 'address-book';
   };
   attributes: {
@@ -274,15 +378,35 @@ export interface SharedTag extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedTestimonial extends Struct.ComponentSchema {
+  collectionName: 'components_shared_testimonials';
+  info: {
+    displayName: 'Block - Testimonial';
+  };
+  attributes: {
+    avatar: Schema.Attribute.Media<'images' | 'files', true>;
+    comment: Schema.Attribute.Text;
+    company: Schema.Attribute.Media<'images' | 'files'>;
+    name: Schema.Attribute.String;
+    position: Schema.Attribute.String;
+    stars: Schema.Attribute.Integer;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'home.mini-card': HomeMiniCard;
-      'home.product': HomeProduct;
-      'home.section': HomeSection;
-      'home.testimonial': HomeTestimonial;
+      'shared.block-simple-feature': SharedBlockSimpleFeature;
       'shared.button': SharedButton;
       'shared.card': SharedCard;
+      'shared.card-feature': SharedCardFeature;
+      'shared.card-highlight': SharedCardHighlight;
+      'shared.card-news': SharedCardNews;
+      'shared.card-rich-text': SharedCardRichText;
+      'shared.card-simple-feature': SharedCardSimpleFeature;
+      'shared.card-slider': SharedCardSlider;
+      'shared.card-slim-feature': SharedCardSlimFeature;
+      'shared.card-testimonial': SharedCardTestimonial;
       'shared.decision': SharedDecision;
       'shared.faq': SharedFaq;
       'shared.hero': SharedHero;
@@ -291,12 +415,16 @@ declare module '@strapi/strapi' {
       'shared.media': SharedMedia;
       'shared.menu-button': SharedMenuButton;
       'shared.menugroup': SharedMenugroup;
+      'shared.mini-card': SharedMiniCard;
+      'shared.product': SharedProduct;
       'shared.qa': SharedQa;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
+      'shared.section': SharedSection;
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
       'shared.tag': SharedTag;
+      'shared.testimonial': SharedTestimonial;
     }
   }
 }

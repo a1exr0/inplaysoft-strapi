@@ -26,12 +26,12 @@
     },
     "description": {
       "type": "text",
-      "maxLength": 80,
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "maxLength": 80
     },
     "slug": {
       "type": "uid",
@@ -39,18 +39,18 @@
     },
     "cover": {
       "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "multiple": false,
       "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      ]
     },
     "author": {
       "type": "relation",
@@ -66,22 +66,38 @@
     },
     "blocks": {
       "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "components": [
         "shared.media",
         "shared.quote",
         "shared.rich-text",
         "shared.slider"
-      ],
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false
+    },
+    "custom_created_at": {
+      "type": "date",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "seo": {
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.seo"
+    "custom_published_at": {
+      "type": "datetime",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

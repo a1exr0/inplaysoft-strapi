@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_heroes",
   "info": {
-    "displayName": "Hero",
+    "displayName": "Card - Hero",
     "description": ""
   },
   "options": {},
@@ -11,6 +11,13 @@
     },
     "description": {
       "type": "text"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "primary",
+        "secondary"
+      ]
     },
     "cover": {
       "type": "media",
@@ -23,13 +30,16 @@
     },
     "buttons": {
       "type": "component",
-      "repeatable": true,
-      "component": "shared.button"
+      "component": "shared.button",
+      "repeatable": true
     },
     "highlights": {
       "type": "component",
-      "repeatable": true,
-      "component": "shared.highlight"
+      "component": "shared.highlight",
+      "repeatable": true
+    },
+    "visible": {
+      "type": "boolean"
     }
   }
 }

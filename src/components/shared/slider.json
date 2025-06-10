@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_sliders",
   "info": {
-    "displayName": "Slider",
+    "displayName": "Block - Slider",
     "icon": "address-book",
     "description": ""
   },
@@ -11,7 +11,9 @@
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }

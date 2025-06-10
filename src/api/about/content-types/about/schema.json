@@ -24,15 +24,45 @@
         }
       }
     },
-    "sections": {
-      "type": "component",
-      "repeatable": true,
-      "component": "home.section",
+    "description": {
+      "type": "text",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "components": [
+        "shared.hero",
+        "shared.faq",
+        "shared.decision",
+        "shared.card",
+        "shared.card-testimonial",
+        "shared.card-slim-feature",
+        "shared.card-slider",
+        "shared.card-simple-feature",
+        "shared.card-news",
+        "shared.card-highlight",
+        "shared.card-feature",
+        "shared.card-rich-text"
+      ]
+    },
+    "seo": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.seo",
+      "repeatable": false
     }
   }
 }

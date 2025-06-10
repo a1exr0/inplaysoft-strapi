@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_cards",
   "info": {
-    "displayName": "Card"
+    "displayName": "Card - Icon"
   },
   "options": {},
   "attributes": {
@@ -13,8 +13,11 @@
     },
     "icon_cards": {
       "type": "component",
-      "repeatable": true,
-      "component": "shared.icon-card"
+      "component": "shared.icon-card",
+      "repeatable": true
+    },
+    "visible": {
+      "type": "boolean"
     }
   }
 }

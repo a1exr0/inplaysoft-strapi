@@ -1,8 +1,7 @@
 {
-  "collectionName": "components_home_products",
+  "collectionName": "components_shared_block_simple_features",
   "info": {
-    "displayName": "Card",
-    "description": ""
+    "displayName": "Block - Simple Feature"
   },
   "options": {},
   "attributes": {
@@ -15,19 +14,11 @@
     "image": {
       "type": "media",
       "multiple": false,
-      "required": false,
       "allowedTypes": [
         "images",
         "files"
       ]
-    },
-    "features": {
-      "type": "component",
-      "repeatable": true,
-      "component": "shared.tag"
-    },
-    "item": {
-      "type": "integer"
     }
-  }
+  },
+  "config": {}
 }

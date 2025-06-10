@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_icon_cards",
   "info": {
-    "displayName": "Icon Card"
+    "displayName": "Block - Icon"
   },
   "options": {},
   "attributes": {
@@ -18,12 +18,12 @@
       "type": "string"
     },
     "icon": {
+      "type": "media",
+      "multiple": false,
       "allowedTypes": [
         "images",
         "files"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     }
   }
 }

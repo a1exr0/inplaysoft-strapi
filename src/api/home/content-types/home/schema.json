@@ -1,11 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "news_pages",
+  "collectionName": "homes",
   "info": {
-    "singularName": "news-page",
-    "pluralName": "news-pages",
-    "displayName": "News",
-    "description": ""
+    "singularName": "home",
+    "pluralName": "homes",
+    "displayName": "Home"
   },
   "options": {
     "draftAndPublish": true
@@ -22,28 +21,37 @@
         "i18n": {
           "localized": true
         }
-      }
+      },
+      "required": true
     },
-    "description": {
-      "type": "string",
+    "desc": {
+      "type": "text",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       }
     },
-    "cover": {
-      "type": "media",
+    "sections": {
+      "type": "dynamiczone",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files"
+      "components": [
+        "shared.hero",
+        "shared.faq",
+        "shared.decision",
+        "shared.card",
+        "shared.card-testimonial",
+        "shared.card-slider",
+        "shared.card-highlight",
+        "shared.card-feature",
+        "shared.card-simple-feature",
+        "shared.card-news",
+        "shared.card-rich-text",
+        "shared.card-slim-feature"
       ]
     },
     "seo": {

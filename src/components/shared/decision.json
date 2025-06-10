@@ -1,7 +1,7 @@
 {
   "collectionName": "components_shared_decisions",
   "info": {
-    "displayName": "Decision"
+    "displayName": "Card - Decision"
   },
   "options": {},
   "attributes": {
@@ -13,8 +13,11 @@
     },
     "buttons": {
       "type": "component",
-      "repeatable": true,
-      "component": "shared.button"
+      "component": "shared.button",
+      "repeatable": true
+    },
+    "visible": {
+      "type": "boolean"
     }
   }
 }

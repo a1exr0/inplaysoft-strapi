@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_home_mini_cards",
+  "collectionName": "components_shared_mini_cards",
   "info": {
-    "displayName": "Mini Card"
+    "displayName": "Block - Mini Card"
   },
   "options": {},
   "attributes": {
