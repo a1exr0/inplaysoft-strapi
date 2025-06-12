@@ -316,6 +316,7 @@ class WordPressImporterFixed {
       
       // Prepare article data with original WordPress dates
       const originalDate = this.parseWordPressDate(data.postDate || data.pubDate);
+      const modifiedDate = this.parseWordPressDate(data.modifiedDate || data.postDate || data.pubDate);
       
       const articleData = {
         title: data.title,
@@ -331,6 +332,8 @@ class WordPressImporterFixed {
           }
         ],
         publishedAt: originalDate.toISOString(),
+        custom_created_at: originalDate.toISOString().split('T')[0], // Date format for custom_created_at
+        custom_published_at: originalDate.toISOString(), // Datetime format for custom_published_at
         seo: {
           metaTitle: data.title,
           metaDescription: data.excerpt || data.title.substring(0, 160)
@@ -339,6 +342,7 @@ class WordPressImporterFixed {
 
       console.log(`   📝 Creating article with cover: ${data.coverImage ? 'YES' : 'NO'}`);
       console.log(`   📝 Final slug to be used: "${articleData.slug}"`);
+      console.log(`   📅 Custom dates - Created: ${articleData.custom_created_at}, Published: ${articleData.custom_published_at}`);
       console.log(`   📊 Article data: ${JSON.stringify(articleData, null, 2)}`);
 
       // Create article via Strapi API
@@ -407,6 +411,7 @@ class WordPressImporterFixed {
       
       // Prepare knowledgebase data with original WordPress dates
       const originalDate = this.parseWordPressDate(data.postDate || data.pubDate);
+      const modifiedDate = this.parseWordPressDate(data.modifiedDate || data.postDate || data.pubDate);
       
       const kbData = {
         title: data.title,
@@ -422,6 +427,8 @@ class WordPressImporterFixed {
           }
         ],
         publishedAt: originalDate.toISOString(),
+        custom_created_at: originalDate.toISOString().split('T')[0], // Date format for custom_created_at
+        custom_published_at: originalDate.toISOString(), // Datetime format for custom_published_at
         seo: {
           metaTitle: data.title,
           metaDescription: data.excerpt || data.title.substring(0, 160)
@@ -430,6 +437,7 @@ class WordPressImporterFixed {
 
       console.log(`   📚 Creating knowledgebase with cover: ${data.coverImage ? 'YES' : 'NO'}`);
       console.log(`   📝 Final slug to be used: "${kbData.slug}"`);
+      console.log(`   📅 Custom dates - Created: ${kbData.custom_created_at}, Published: ${kbData.custom_published_at}`);
       //console.log(`   📊 Knowledgebase data: ${JSON.stringify(kbData, null, 2)}`);
 
       // Create knowledgebase entry via Strapi API
