@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_shared_block_successes",
+  "info": {
+    "displayName": "Block - Success"
+  },
+  "options": {},
+  "attributes": {
+    "header": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "buttons": {
+      "type": "component",
+      "component": "shared.button",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

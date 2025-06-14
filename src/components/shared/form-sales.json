@@ -1,0 +1,103 @@
+{
+  "collectionName": "components_shared_form_sales",
+  "info": {
+    "displayName": "Form - Contact"
+  },
+  "options": {},
+  "attributes": {
+    "contact_title": {
+      "type": "string"
+    },
+    "name_label": {
+      "type": "string"
+    },
+    "company_label": {
+      "type": "string"
+    },
+    "email_label": {
+      "type": "string"
+    },
+    "phone_label": {
+      "type": "string"
+    },
+    "business_title": {
+      "type": "string"
+    },
+    "has_experience_label": {
+      "type": "string"
+    },
+    "has_experience_yes": {
+      "type": "string"
+    },
+    "has_experience_no": {
+      "type": "string"
+    },
+    "expertise_label": {
+      "type": "string"
+    },
+    "expertise_list": {
+      "type": "text"
+    },
+    "expertise_years_label": {
+      "type": "string"
+    },
+    "expertise_years_list": {
+      "type": "text"
+    },
+    "role_label": {
+      "type": "string"
+    },
+    "role_list": {
+      "type": "text"
+    },
+    "license_title": {
+      "type": "string"
+    },
+    "license_label": {
+      "type": "string"
+    },
+    "license_no": {
+      "type": "string"
+    },
+    "license_yes": {
+      "type": "string"
+    },
+    "license_name_label": {
+      "type": "string"
+    },
+    "license_type_placeholder": {
+      "type": "string"
+    },
+    "market_label": {
+      "type": "string"
+    },
+    "market_list": {
+      "type": "text"
+    },
+    "message_label": {
+      "type": "string"
+    },
+    "message_placeholder": {
+      "type": "string"
+    },
+    "marketing_consent": {
+      "type": "string"
+    },
+    "privacy_consent": {
+      "type": "string"
+    },
+    "inquiry_type_title": {
+      "type": "string"
+    },
+    "inquiry_type_label": {
+      "type": "string"
+    },
+    "inquiry_type_list": {
+      "type": "text"
+    },
+    "send_button_label": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

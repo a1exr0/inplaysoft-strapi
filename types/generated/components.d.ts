@@ -12,6 +12,18 @@ export interface SharedBlockSimpleFeature extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedBlockSuccess extends Struct.ComponentSchema {
+  collectionName: 'components_shared_block_successes';
+  info: {
+    displayName: 'Block - Success';
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    buttons: Schema.Attribute.Component<'shared.button', true>;
+    header: Schema.Attribute.String;
+  };
+}
+
 export interface SharedButton extends Struct.ComponentSchema {
   collectionName: 'components_shared_buttons';
   info: {
@@ -166,6 +178,46 @@ export interface SharedFaq extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedFormSales extends Struct.ComponentSchema {
+  collectionName: 'components_shared_form_sales';
+  info: {
+    displayName: 'Form - Contact';
+  };
+  attributes: {
+    business_title: Schema.Attribute.String;
+    company_label: Schema.Attribute.String;
+    contact_title: Schema.Attribute.String;
+    email_label: Schema.Attribute.String;
+    expertise_label: Schema.Attribute.String;
+    expertise_list: Schema.Attribute.Text;
+    expertise_years_label: Schema.Attribute.String;
+    expertise_years_list: Schema.Attribute.Text;
+    has_experience_label: Schema.Attribute.String;
+    has_experience_no: Schema.Attribute.String;
+    has_experience_yes: Schema.Attribute.String;
+    inquiry_type_label: Schema.Attribute.String;
+    inquiry_type_list: Schema.Attribute.Text;
+    inquiry_type_title: Schema.Attribute.String;
+    license_label: Schema.Attribute.String;
+    license_name_label: Schema.Attribute.String;
+    license_no: Schema.Attribute.String;
+    license_title: Schema.Attribute.String;
+    license_type_placeholder: Schema.Attribute.String;
+    license_yes: Schema.Attribute.String;
+    market_label: Schema.Attribute.String;
+    market_list: Schema.Attribute.Text;
+    marketing_consent: Schema.Attribute.String;
+    message_label: Schema.Attribute.String;
+    message_placeholder: Schema.Attribute.String;
+    name_label: Schema.Attribute.String;
+    phone_label: Schema.Attribute.String;
+    privacy_consent: Schema.Attribute.String;
+    role_label: Schema.Attribute.String;
+    role_list: Schema.Attribute.Text;
+    send_button_label: Schema.Attribute.String;
+  };
+}
+
 export interface SharedHero extends Struct.ComponentSchema {
   collectionName: 'components_shared_heroes';
   info: {
@@ -178,7 +230,7 @@ export interface SharedHero extends Struct.ComponentSchema {
     description: Schema.Attribute.Text;
     highlights: Schema.Attribute.Component<'shared.highlight', true>;
     title: Schema.Attribute.String;
-    type: Schema.Attribute.Enumeration<['primary', 'secondary']>;
+    type: Schema.Attribute.Enumeration<['primary', 'secondary', 'orange']>;
     visible: Schema.Attribute.Boolean;
   };
 }
@@ -397,6 +449,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'shared.block-simple-feature': SharedBlockSimpleFeature;
+      'shared.block-success': SharedBlockSuccess;
       'shared.button': SharedButton;
       'shared.card': SharedCard;
       'shared.card-feature': SharedCardFeature;
@@ -409,6 +462,7 @@ declare module '@strapi/strapi' {
       'shared.card-testimonial': SharedCardTestimonial;
       'shared.decision': SharedDecision;
       'shared.faq': SharedFaq;
+      'shared.form-sales': SharedFormSales;
       'shared.hero': SharedHero;
       'shared.highlight': SharedHighlight;
       'shared.icon-card': SharedIconCard;

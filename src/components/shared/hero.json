@@ -16,7 +16,8 @@
       "type": "enumeration",
       "enum": [
         "primary",
-        "secondary"
+        "secondary",
+        "orange"
       ]
     },
     "cover": {

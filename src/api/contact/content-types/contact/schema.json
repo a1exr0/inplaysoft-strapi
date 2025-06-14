@@ -31,6 +31,16 @@
         "shared.decision"
       ]
     },
+    "success": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.block-success",
+      "repeatable": false
+    },
     "seo": {
       "type": "component",
       "pluginOptions": {
@@ -39,6 +49,16 @@
         }
       },
       "component": "shared.seo",
+      "repeatable": false
+    },
+    "form": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.form-sales",
       "repeatable": false
     }
   }
