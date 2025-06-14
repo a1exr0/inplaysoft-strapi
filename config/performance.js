@@ -2,14 +2,28 @@ module.exports = ({ env }) => ({
   // Response caching configuration
   cache: {
     enabled: env.bool('CACHE_ENABLED', true),
-    type: 'memory', // or 'redis' for production
+    type: env('CACHE_TYPE', 'memory'), // or 'redis' for production
     maxAge: env.int('CACHE_MAX_AGE', 300000), // 5 minutes
     models: [
       'api::article.article',
       'api::category.category',
       'api::author.author',
       'api::global.global',
+      // Add all other API models here
+      'api::*', // This will cache all API endpoints
     ],
+    // Cache all API routes
+    routes: [
+      '/api/*', // Cache all API routes
+    ],
+    // Cache settings
+    settings: {
+      ttl: env.int('CACHE_TTL', 300000), // 5 minutes
+      max: env.int('CACHE_MAX_ITEMS', 1000), // Maximum number of items in cache
+      allowStale: env.bool('CACHE_ALLOW_STALE', false), // Don't allow stale cache
+      cacheHeaders: true, // Cache response headers
+      cacheAuthorizedRequests: true, // Cache authenticated requests
+    },
   },
 
   // Query optimization settings
