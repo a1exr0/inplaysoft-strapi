@@ -34,9 +34,21 @@ module.exports = ({ env }) => [
       origin: [
         'http://localhost:1337', // Strapi admin
         'http://localhost:3000', // Local development
-        'https://inplaysoft-prototype.vercel.app', // Your frontend
-        'https://*.inplaysoft.com', // All Vercel apps (for development branches)
+        'https://preview.inplaysoft.com', // Production preview domain
+        'https://www.inplaysoft.com', // Production main domain
+        'https://inplaysoft.com', // Production main domain (without www)
+        // Dynamic origin function for all inplaysoft.com subdomains
+        (origin, callback) => {
+          if (!origin) return callback(null, true);
+          if (origin.includes('.inplaysoft.com') || origin.includes('inplaysoft.com')) {
+            return callback(null, true);
+          }
+          callback(new Error('Not allowed by CORS'));
+        }
       ],
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     },
   },
   'strapi::poweredBy',
