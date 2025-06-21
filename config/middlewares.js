@@ -57,4 +57,9 @@ module.exports = ({ env }) => [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+  // Custom image optimizer middleware
+  {
+    name: 'global::image-optimizer',
+    config: {}
+  }
 ];
