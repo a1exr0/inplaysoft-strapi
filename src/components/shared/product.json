@@ -28,6 +28,9 @@
     },
     "item": {
       "type": "integer"
+    },
+    "url": {
+      "type": "string"
     }
   }
 }

@@ -18,6 +18,9 @@
         "images",
         "files"
       ]
+    },
+    "url": {
+      "type": "string"
     }
   },
   "config": {}

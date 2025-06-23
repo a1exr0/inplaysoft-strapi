@@ -9,6 +9,7 @@ export interface SharedBlockSimpleFeature extends Struct.ComponentSchema {
     description: Schema.Attribute.Text;
     image: Schema.Attribute.Media<'images' | 'files'>;
     title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
   };
 }
 
@@ -319,6 +320,7 @@ export interface SharedProduct extends Struct.ComponentSchema {
     image: Schema.Attribute.Media<'images' | 'files'>;
     item: Schema.Attribute.Integer;
     title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
   };
 }
 
