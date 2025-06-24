@@ -63,6 +63,14 @@
       },
       "component": "shared.seo",
       "repeatable": false
+    },
+    "slug": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }
