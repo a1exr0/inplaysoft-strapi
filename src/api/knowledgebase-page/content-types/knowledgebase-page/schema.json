@@ -34,22 +34,30 @@
     },
     "cover": {
       "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "multiple": false,
       "required": false,
       "allowedTypes": [
         "images",
         "files"
-      ],
+      ]
+    },
+    "seo": {
+      "type": "component",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
-      }
-    },
-    "seo": {
-      "type": "component",
-      "repeatable": false,
+      },
       "component": "shared.seo",
+      "repeatable": false
+    },
+    "slug": {
+      "type": "string",
       "pluginOptions": {
         "i18n": {
           "localized": true
