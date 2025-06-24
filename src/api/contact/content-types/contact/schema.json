@@ -17,13 +17,28 @@
   },
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "blocks": {
       "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
       "components": [
         "shared.hero",
         "shared.card",
@@ -62,7 +77,7 @@
       "repeatable": false
     },
     "slug": {
-      "type": "string",
+      "type": "uid",
       "pluginOptions": {
         "i18n": {
           "localized": true
