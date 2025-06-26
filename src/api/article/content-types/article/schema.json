@@ -35,7 +35,9 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
+      "targetField": "title",
+      "required": true,
+      "maxLength": 149
     },
     "cover": {
       "type": "media",
