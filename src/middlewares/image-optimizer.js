@@ -1,6 +1,6 @@
 const sharp = require('sharp');
 const path = require('path');
-const AWS = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
 module.exports = (config, { strapi }) => {
   return async (ctx, next) => {
@@ -84,15 +84,17 @@ module.exports = (config, { strapi }) => {
                   try {
                     // Initialize S3 with existing configuration
                     const s3Config = {
-                      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-                      secretAccessKey: process.env.AWS_ACCESS_SECRET,
-                      region: process.env.AWS_REGION
+                      region: process.env.AWS_REGION,
+                      credentials: {
+                        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+                        secretAccessKey: process.env.AWS_ACCESS_SECRET,
+                      }
                     };
                     
-                    if (!s3Config.accessKeyId || !s3Config.secretAccessKey || !s3Config.region) {
+                    if (!s3Config.credentials.accessKeyId || !s3Config.credentials.secretAccessKey || !s3Config.region) {
                       console.log('⚠️  AWS credentials not found - WebP files created but not uploaded');
                     } else {
-                      const s3 = new AWS.S3(s3Config);
+                      const s3 = new S3Client(s3Config);
                       const bucketName = process.env.AWS_BUCKET_NAME;
                       
                       // Upload main WebP file
@@ -101,14 +103,13 @@ module.exports = (config, { strapi }) => {
                         Bucket: bucketName,
                         Key: mainWebpKey,
                         Body: webpFormats.main.buffer,
-                        ContentType: 'image/webp',
-                        ACL: process.env.AWS_ACL || 'public-read'
+                        ContentType: 'image/webp'
                       };
                       
-                      const mainUploadResult = await s3.upload(mainUploadParams).promise();
+                      const mainUploadResult = await s3.send(new PutObjectCommand(mainUploadParams));
                       
                       // Update main file to WebP
-                      uploadedFile.url = mainUploadResult.Location;
+                      uploadedFile.url = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${mainWebpKey}`;
                       uploadedFile.mime = 'image/webp';
                       uploadedFile.ext = '.webp';
                       uploadedFile.size = (webpFormats.main.size / 1024).toFixed(2);
@@ -122,16 +123,15 @@ module.exports = (config, { strapi }) => {
                             Bucket: bucketName,
                             Key: webpKey,
                             Body: webpFormats[formatName].buffer,
-                            ContentType: 'image/webp',
-                            ACL: process.env.AWS_ACL || 'public-read'
+                            ContentType: 'image/webp'
                           };
                           
-                          const formatUploadResult = await s3.upload(formatUploadParams).promise();
+                          const formatUploadResult = await s3.send(new PutObjectCommand(formatUploadParams));
                           
                           // Update format to WebP
                           updatedFormats[formatName] = {
                             ...formatData,
-                            url: formatUploadResult.Location,
+                            url: `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${webpKey}`,
                             mime: 'image/webp',
                             ext: '.webp',
                             size: (webpFormats[formatName].size / 1024).toFixed(2),

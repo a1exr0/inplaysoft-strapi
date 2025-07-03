@@ -2,15 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
 const fetch = require('node-fetch');
-const AWS = require('aws-sdk');
+const { S3Client, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
 const slugify = require('slugify');
 const FormData = require('form-data');
 
 // Configure AWS S3
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_ACCESS_SECRET,
+const s3 = new S3Client({
   region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_ACCESS_SECRET,
+  }
 });
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
