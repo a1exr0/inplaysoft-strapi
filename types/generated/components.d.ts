@@ -77,26 +77,18 @@ export interface SharedCardHighlight extends Struct.ComponentSchema {
   };
 }
 
-export interface SharedCardKnowledgebase extends Struct.ComponentSchema {
-  collectionName: 'components_shared_card_knowledgebases';
-  info: {
-    displayName: 'Card - Knowledgebase';
-  };
-  attributes: {
-    description: Schema.Attribute.Text;
-    title: Schema.Attribute.String;
-    visible: Schema.Attribute.Boolean;
-  };
-}
-
 export interface SharedCardNews extends Struct.ComponentSchema {
   collectionName: 'components_shared_card_news';
   info: {
     displayName: 'Card - News';
   };
   attributes: {
+    button_label: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['news', 'knowledgebase']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'news'>;
     visible: Schema.Attribute.Boolean;
   };
 }
@@ -476,7 +468,6 @@ declare module '@strapi/strapi' {
       'shared.card': SharedCard;
       'shared.card-feature': SharedCardFeature;
       'shared.card-highlight': SharedCardHighlight;
-      'shared.card-knowledgebase': SharedCardKnowledgebase;
       'shared.card-news': SharedCardNews;
       'shared.card-rich-text': SharedCardRichText;
       'shared.card-simple-feature': SharedCardSimpleFeature;

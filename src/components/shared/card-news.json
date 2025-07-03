@@ -13,6 +13,18 @@
     },
     "visible": {
       "type": "boolean"
+    },
+    "button_label": {
+      "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "required": true,
+      "default": "news",
+      "enum": [
+        "news",
+        "knowledgebase"
+      ]
     }
   },
   "config": {}
